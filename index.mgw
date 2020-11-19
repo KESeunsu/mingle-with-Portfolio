@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="신입개발자,mobile,responsive web design,portfolio,xhr,subPortfolio,Backend,Frontend,AMP">
+    <meta name="subject" content="portfolio">
+    <meta name="robots" content="ALL">
+    <title>밍글위드</title>
+    <link href="https://fonts.googleapis.com/css?family=Baskervville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR|Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="resources/stylesheets/common.css?v=<?=rand(1000000,9999999)?>">
+    <!--<link rel="stylesheet" href="resources/stylesheets/loading.scss?v=<?=rand(1000000,9999999)?>">-->
+    <script src="resources/scripts/common.js?v=<?=rand(1000000,9999999)?>"></script>
+</head>
+<body class="preload">
+<div class="base">
+    <div class="base-item back0" rel="js-backColor"></div>
+    <div class="base-item back1" rel="js-backColor"></div>
+    <div class="base-item back2" rel="js-backColor"></div>
+    <div class="base-item back3" rel="js-backColor"></div>
+    <div class="base-item icons">
+        <div class="icons-item git"><a href=www.mingle-with.com></a> </div>
+        <div class="icons-item port">PORTFOLIO</div>
+        <div class="icons-item info"></div>
+    </div>
+    <div class="base-item background font">
+        <div class="background font-item first font">
+            WHAT'S YOUR NEXT
+        </div>
+        <div class="background font-item last font">
+            DESTINATION ?
+        </div>
+    </div>
+    <div class="base-item container">
+        <div class="container-item content" rel="js-content">
+            <div class="content-item first letter">
+                Who
+            </div>
+            <div class="content-item last letter">
+                I Am
+            </div>
+            <video muted  class="content-item image" width="100px" height="100px" rel="js-video">
+                <source  src="resources/images/Pexels%20Videos%202128543.mp4">
+            </video>
+        </div>
+        <div class="container-item content" rel="js-content">
+            <div class="content-item first letter">
+                Ability
+            </div>
+            <div class="content-item last letter">
+                & Skill
+            </div>
+            <video muted  class="content-item image" width="100px" height="100px" rel="js-video">
+                <source  src="resources/images/Pexels%20Videos%202268807.mp4">
+            </video>
+        </div>
+        <div class="container-item content" rel="js-content">
+            <div class="content-item first letter">
+                Project
+            </div>
+            <div class="content-item last letter">
+                List
+            </div>
+            <video muted  class="content-item image" width="100px" height="100px" rel="js-video">
+                <source  src="resources/images/vvideo.mp4">
+            </video>
+        </div>
+        <div class="container-item content" rel="js-content">
+            <div class="content-item first letter">
+                Come Back
+            </div>
+            <div class="content-item last letter">
+                Home
+            </div>
+            <video muted  class="content-item image" width="100px" height="100px" rel="js-video">
+                <source  src="resources/images/video.mp4">
+            </video>
+        </div>
+
+    </div>
+    <div class="base-item copyright">
+        &copy; EunSu-Kim
+    </div>
+    <div class="base-item navigator">
+        <div class="navigator-item position">
+
+        </div>
+    </div>
+</div>
+
+</body>

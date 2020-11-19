@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="53b74215-7a8a-42b4-8902-cd9d91d71b73" name="hihihi" url="https://www.mingle-with.com/">
+        <fileTransfer host="34.84.239.189" port="6621" privateKey="C:\Credential\key.pem" rootFolder="/var/www/mingle-with/" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="6621" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

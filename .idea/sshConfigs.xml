@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="34.84.239.189" id="13f789f1-3132-40cf-b54d-9c838de2df7f" keyPath="C:\Credential\key.pem" port="6621" customName="hihihi" nameFormat="CUSTOM" username="minglewith" />
+      <sshConfig host="15.165.30.36" id="43be6514-30e1-48aa-9d8c-40e2dd81fe25" keyPath="C:\Users\김은수\Downloads\MasterKey.pem" nameFormat="DESCRIPTIVE" username="ubuntu" />
+      <sshConfig host="34.84.239.189" id="4c8f3236-cf29-4eb8-8f7e-748b826cab07" keyPath="C:\Credential\key.pem" port="6621" customName="hihihi" nameFormat="CUSTOM" username="minglewith" />
+    </configs>
+  </component>
+</project>

@@ -1,0 +1,66 @@
+<?php
+class Account{
+    public static function register(string $email,string $password){
+        if (!@include_once('/var/www/html/xhr/resources/xhrs/dao.mgw')) {
+            return '다오를 패키징 못함';
+        }
+        $connection = Dao::get_connection();
+        $statement = $connection->prepare('select count(user_id) as "count" from study.users where  email=?');
+        $statement->bind_param('s',$email);
+        $statement->execute();
+        $result = $statement->get_result();
+        $count = 0;
+        while ($row = $result->fetch_assoc()) {
+            $count = (int)$row['count'];
+        }
+        if ($count > 0) {
+            $result->close();
+            $statement->close();
+            $connection->close();
+            return '중복되는 아이디가 있으니 다른 아이디를 입력하시오';
+        }
+        $session=hash('sha512',$email.$password.date('ymdHis'));
+        $password=hash('sha512',$password);
+        $statement=$connection->prepare('insert into study.users(email, password, session) values (?,?,?)');
+        $statement->bind_param('sss',$email,$password,$session );
+
+        if($statement->execute()){
+            $register_result='가입 끝';
+        }else{
+            $register_result='디비에 저장 안됨 실패';
+        }
+        $result->close();
+        $statement->close();
+        $connection->close();
+        return $register_result;
+    }
+
+    public static function login(string $email,string $password){
+        if (!@include_once('/var/www/html/xhr/resources/xhrs/dao.mgw')) {
+            return '다오를 패키징 못함';
+        }
+        $connection = Dao::get_connection();
+        $statement = $connection->prepare('select count(user_id) as "count" from study.users where  email=? and password=?');
+        $statement->bind_param('ss',$email,$password);
+        $statement->execute();
+        $result=$statement->get_result();
+        $count=0;
+        while ($row=$result->fetch_assoc()){
+            $count=(int)$count['count'];
+            break;
+        }
+        if($count===0){
+            $login_result='로그인성공';
+        }else{
+            $session=hash('sha512',$email.$password.date('ymdHis'));
+            $statement=$connection->prepare('update study.users set session=? where email=?');
+            $statement->bind_param('ss',$session,$email);
+            $statement->execute();
+            $login_result='로그인 실패';
+        }
+        $result->close();
+        $statement->close();
+        $connection->close();
+        return $login_result;
+    }
+}

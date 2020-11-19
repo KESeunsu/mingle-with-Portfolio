@@ -1,0 +1,81 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+    <header>
+        <title>밍글위드</title>
+        <meta charset="UTF-8">
+        <meta name="content-security-policy" content="">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!--        호완성-->
+        <meta name="author" content="mingle-with">
+        <meta name="description" content="누구나 손 쉬운 스토리 쓰기">
+        <meta name="generator" content="Microsoft Window Notepad">
+        <meta name="keywords" content="드라마,작가,영화">
+        <meta name="referrer" content="strict-origin-when-cross-origin">
+        <meta name="robots" content="index, follow, no archive">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<!--width=device-width::기기 독립적 픽셀에서 화면 너비에 맞게 페이지를 맞춥니다. initial-scale=1.0::기기 방향에 상관없이 브라우저가 기기 독립적 픽셀과 CSS 픽셀 간에 1:1 관계를 설정       -->
+<!--minimum-scale,maximum-scale,user-scalable이들 속성이 설정된 경우, 사용자가 뷰포트를 확대/축소할 수 없으므로 접근성에 문제가 생길 수 있습니다.-->
+        <link rel="stylesheet" href="resources/stylesheets/objects.css?v=<?=rand(1000000,9999999)?>">
+        <link rel="stylesheet" href="resources/stylesheets/common.css?v=<?=rand(1000000,9999999)?>">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700&display=swap&subset=latin-ext">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet">
+        <script src="resources/scripts/common.js?v=<?=rand(1000000,9999999)?>"></script>
+    </header>
+    <body>
+        <div rel="js-cover" class="base cover">
+
+        </div>
+            <div rel="js-form-register" class="base register">
+                <div class="register-item left">
+                    Register
+                </div>
+                 <div class="register-item right">
+                    <div class="right-item step">
+                        <div class="step-item agree active"><i class="material-icons">subject</i></div>
+                        <div class="step-item fill"><i class="material-icons">edit</i> </div>
+                        <div class="step-item agreement"><i class="material-icons">check</i></div>
+                    </div>
+                     <div class="right-item content" >
+                         <div class="content-item agree">
+                             <div  class="agree-item buttons">
+                                 <div rel="js-buttons" class="buttons-item ua active">이용약관</div>
+                                 <div rel="js-buttons" class="buttons-item privacy">개인정보</div>
+                                 <div rel="js-buttons" class="buttons-item disclaimer">한계조항</div>
+                             </div>
+                             <div class="agree-item terms">
+                                 <p id="agree-item detail">제발 바껴라 ㅜㅜ</p>
+                             </div>
+                             <div class="agree-item check">
+                                <div rel="js-register-agree-check" class="object-checkbox">
+                                    <div class="object-checkbox-item box">
+                                        <i class="material-icons">check</i>
+                                    </div>
+                                    <div class="object-checkbox-item caption">
+                                        위의 이용약관, 개인정보 처리방침, 한계조항을 모두 읽어보았고 이해하였으면 동의합니다.
+                                        ?>
+                                    </div>
+                                </div>
+                             </div>
+                             <div rel="js-register-warning" class="agree-item warning">
+                                 약관을 동의해주세요.
+                             </div>
+                         </div>
+                         <div class="content-item fill" hidden></div>
+                         <div class="content-item done" hidden></div>
+                     </div>
+                     <div class="right-item buttons" >
+                        <div rel="js-register-next" class="object-button native">다음</div>
+                     </div>
+                </div>
+            </div>
+
+        <div rel="js-register" class="object-button blue">회원가입
+            <div class="object-button-item caption"></div>
+            <div class="object-button-item effect"></div>
+        </div>
+    </body>
+</html>
+

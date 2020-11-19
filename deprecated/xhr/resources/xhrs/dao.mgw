@@ -1,0 +1,16 @@
+<?php
+class Dao{
+    private const HOST='172.26.9.204';//db고정 아이피
+    private  const UID='study';
+    private  const PASSWORD='study!';
+    private  const DB='study';
+    private  const PORT='3306';
+
+    public static function get_connection(){
+    $connection=new mysqli(self::HOST,self::UID,self::PASSWORD,self::DB,self::PORT);
+    if($connection->connect_errno){
+        return null;
+    }
+    return $connection;
+    }
+}

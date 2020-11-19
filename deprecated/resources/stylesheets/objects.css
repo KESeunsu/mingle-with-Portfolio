@@ -1,0 +1,119 @@
+div.object-button{
+    background-color:#E0E5EF;
+    border-radius:0.25rem;
+    color:#10151F;
+    cursor:pointer;
+    display:inline-block;
+    overflow:hidden;
+    padding:0.75rem 1.5rem;
+    position:relative;
+    user-select:none;
+}
+div.object-button.native{
+    background-color: #10CCCD;
+    color:#F0F5FF;
+}
+div.object-button.red{
+    background-color:#CD5C5C;
+    color:#F0F5FF;
+}
+div.object-button.blue{
+    background-color:#4682B4;
+    color:#F0F5FF;
+}
+div.object-button > div.object-button-item.caption{
+    position:relative;
+    z-index:1;
+}
+div.object-button > div.object-button-item.effect{
+    top:-100%;
+    left:-300%;
+    width:300%;
+    height:300%;
+    background-color:#D0D5DF;
+    border-radius:40%;
+    position:absolute;
+    transition:all 500ms cubic-bezier(0.165, 0.840, 0.440, 1.000);
+    z-index:0;
+}
+div.object-button.red > div.object-button-item.effect{
+    background-color:#BD4C4C;
+}
+div.object-button.blue> div.object-button-item.effect{
+    background-color:#3672A4;
+}
+div.object-button.blue:hover> div.object-button-item.effect{
+    background-color:#3672A4;
+    opacity: 0.4;
+}
+div.object-button:hover > div.object-button-item.effect{
+    left:-150%;
+    background-color: #80858A;
+    opacity: 0.4;
+}
+
+div.object-checkbox{
+    align-items:center;
+    cursor:pointer;
+    display:flex;
+    justify-content:flex-start;
+    user-select:none;
+}
+div.object-checkbox > div.object-checkbox-item.box{
+    width:0.85rem;
+    height:0.85rem;
+    align-items:center;
+    border:0.125rem solid #80858A;
+    border-radius:0.25rem;
+    color:#30353A;
+    display:flex;
+    justify-content:center;
+    margin-right:0.5rem;
+    text-align: center;
+    position:relative;
+}
+div.object-checkbox > div.object-checkbox-item.box > i{
+    top:1px;
+    font-size:0.85rem;
+    opacity:0;
+    position:relative;
+}
+div.object-checkbox.checked > div.object-checkbox-item.box > i{
+    opacity:1;
+}
+
+body > div.base.register > div.register-item.right > div.right-item.content > div.content-item.agree > div.agree-item.buttons{
+    align-items:center;
+    display:flex;
+    justify-content:center;
+}
+body > div.base.register > div.register-item.right > div.right-item.content > div.content-item.agree > div.agree-item.buttons > div.buttons-item{
+    background-color:#E0E5EF;
+    border-radius:0.25rem;
+    cursor:pointer;
+    font-size:0.9rem;
+    flex-shrink:1;
+    flex-grow:1;
+    padding:0.5rem 0.75rem;
+    text-align:center;
+    user-select:none;
+}
+
+body > div.base.register > div.register-item.right > div.right-item.content > div.content-item.agree > div.agree-item.buttons > div.buttons-item{
+    background-color: #E0E5EF;
+    border-right: 0.25rem;
+    cursor:pointer;
+    font-size: 0.9rem;
+    flex-shrink: 1;
+    flex-grow: 1;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    user-select: none;
+}
+body > div.base.register > div.register-item.right > div.right-item.content > div.content-item.agree > div.agree-item.buttons > div.buttons-item:not(:last-child){
+    margin-right:0.5rem;
+}
+body > div.base.register > div.register-item.right > div.right-item.content > div.content-item.agree > div.agree-item.buttons > div.buttons-item.active{
+    background-color:#10CCCD;
+    color:#FFFFFF;
+}

@@ -1,0 +1,7 @@
+<?php
+$ref=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+if(strpos($ref,'https://mingle-with.com/xhr/')===false){
+    exit('잘못된 주소입니다');
+}
+?>
+사이트의 메인 내용

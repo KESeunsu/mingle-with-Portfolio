@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+    <head>
+        <title>Structure</title>
+        <meta charset="UTF-8">
+        <style type="text/css">
+            body{
+                background-color:#10151F;
+                color:#A0A5AA;
+                overflow:hidden;
+                user-select:none;
+            }
+
+            body > div.base.header{
+                top:0;
+                left:0;
+                width:100%;
+                background-color:Red;
+                position:fixed;
+                z-index:9;
+            }
+            body > div.base.header > div.header-item{
+                padding:1rem;
+                position:absolute;
+            }
+            body > div.base.header > div.header-item.title{
+                left:50%;
+                transform:translateX(-50%);
+            }
+            body > div.base.header > div.header-item.me{
+                right:0;
+            }
+            body > div.base.text{
+                top:5rem;
+                left:5rem;
+                color:#20252F50;
+                font-size:8.5vw;
+                position:fixed;
+                text-align:center;
+                white-space:nowrap;
+                pointer-events:none;
+                z-index:0;
+            }
+            body > div.base.copyright{
+                left:1rem;
+                bottom:1rem;
+                position:fixed;
+                pointer-events:none;
+            }
+            body > div.base.content{
+                top:0;
+                left:0;
+                width:100%;
+                /*height:calc(100% + 1rem);*/
+                height:100%;
+                overflow-x:scroll;
+                overflow-y:hidden;
+                position:absolute;
+                z-index:1;
+            }
+
+            body > div.base.content > div.content-item.video-container{
+                top:calc(50% - 0.5rem);
+                min-width:100%;
+                position:relative;
+                transform:translateY(-50%);
+                white-space:nowrap;
+                word-wrap:normal;
+                word-break:keep-all;
+            }
+
+            body > div.base.content > div.content-item.video-container > div.video-container-item:first-child{
+                margin-left:18vw;
+            }
+            body > div.base.content > div.content-item.video-container > div.video-container-item:last-child{
+                margin-right:18vw;
+            }
+            body > div.base.content > div.content-item.video-container > div.video-container-item{
+                width:calc(9vw + 9vh);
+                min-width:16rem;
+                height:calc(12vw + 12vh);
+                min-height:21rem;
+                background-color:red;
+                display:inline-block;
+                margin-left:calc(5vw + 5vh);
+                margin-right:calc(5vw + 5vh);
+                position:relative;
+            }
+
+            /*@media(max-height:31.25rem){*/
+            /*    body > div.base.content > div.content-item.video-container > div.video-container-item{*/
+            /*        height:80vh !important;*/
+            /*        min-height:auto !important;*/
+            /*    }*/
+            /*}*/
+        </style>
+    </head>
+    <body>
+        <div class="base header" role="heading">
+            <div class="header-item github">[GITHUB]</div>
+            <div class="header-item title">[TITLE]</div>
+            <div class="header-item me">[ME]</div>
+        </div>
+        <div class="base text" role="none">WHAT'S YOUR NEXT<br>DESTINATION?</div>
+        <div class="base content" role="main">
+            <div class="content-item video-container">
+                <div class="video-container-item"></div>
+                <div class="video-container-item"></div>
+                <div class="video-container-item"></div>
+                <div class="video-container-item"></div>
+            </div>
+        </div>
+        <div class="base copyright" role="doc-credit">&copy;Eunsu</div>
+    </body>
+</html>

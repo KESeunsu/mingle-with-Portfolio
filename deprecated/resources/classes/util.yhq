@@ -1,0 +1,18 @@
+<?php
+if(!defined('ACCESS_KEY')){
+    http_response_code(404);//일부러 에러보내는거
+    header('location:/resources/pages/error.yhq?code=404');//내가만든 에러페이지보이도록
+    include_once('./../pages/error.yhq');//내가만든 에러위치
+    exit();
+}
+
+class Util{
+    private function __construct(){}//생성자에서 객체화가 되지 않도록 static 으로 메모리에 객체를 이미 생성해놓았기때문
+    //private function Util(){}위와 같은 것 생상자지만 위를 더 선호해서 쓰도록 한다
+public static function parse_get(string $key,$fallback=''){//get에서 이씅면 가져오고 아니면 빈칸으로
+    return isset($_GET[$key])?$_GET[$key]:$fallback;
+}
+public static function parse_post(string $key,$fallback=''){
+    return isset($_POST[$key])?$_POST[$key]:$fallback;
+}
+}

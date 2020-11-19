@@ -1,0 +1,267 @@
+class FullPage{
+    container;
+    //body바로 아래의 div#test를 선택해주는 변수
+    childMain;
+    //container바로 아래 div 페이지 전환전 가장 처음 나오는(회색) div를 선택해주는 변수
+    childrenVertical;
+    //main과 같은 위치의 div,세로로 페이지 전환할때 나타나는 div들
+    childrenHorizontal;
+    //main과 같은 위치의 div,가로로 페이지 전환할때 나타나는 div들
+    verticalTopArray;
+    //
+    horizontalLeftArray;
+    activePage;
+    activePageIndex;
+    params;
+
+    constructor(element, params){
+    //생성자 다른 js파일에서 이 FullPage를 쓰고자 할때 new FullPage(?,?); 하고자할때
+        let instance=this;
+        //FullPage의 변수에 접근하기 위해
+        instance.initContainer(instance, element);
+        instance.initParameters(instance, params);
+        instance.initChildren(instance);
+        instance.attachEvents(instance);
+
+        instance.activePage=instance.childMain;
+        instance.activePageIndex=-1;
+    }
+
+    initContainer(instance, element){
+    //element 선택자랑 그에맞는 position이 정상적으로 되어 있는지 확인하는 메소드
+        if(!(element instanceof HTMLElement)){
+        //element가 HTMLElement타입으로 변할수 없는 조건이면 이조건을 통과하도록 (error잡으려고)
+        //HTMLElement은 document.getElementById(~~)같은 js함수로 html을 선택할수 있는 요소인듯?
+            console.error('[FullPage] [Critical] Parameter "element" should be passed as HTML element. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            return;//에러 발생시켜주고 문구남겨주고 이조건문을 들어오면 The End
+        }
+        instance.container=element;
+        //위조건문을 통과해서 정상적인 htmlElement라면 div#test를 container에 넣어준다
+        if(getComputedStyle(element)['position']==='static'){
+        //element의 style의 position이 static이면 자손에 position주는게 안돼서 주도록 static 이라면 에러 터지도록 함
+
+            console.error('[FullPage] [Critical] Position attribute of container element should not be "static". For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            return;
+        }
+    }
+    initParameters(instance, params){
+        //params가 잘 선택된 Map인지 검사하고, hash의 key가 잘선택 되었나와 value가 이상한 값이거나 설정을 안했을 경우 맨아래의 내부클래스의 default값을 적용시켜줌
+        if(!(params instanceof Map)){
+            console.error('[FullPage] [Critical] Parameter "params" should be passed as Map object. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            return;
+            //params가 잘 선택된 Map인지 검사 아님 에러
+        }
+        instance.params=params;
+        //params정상이면 instance.params(전역변수)에 넣어줌
+        if(typeof instance.params.get('direction')!=='string' || (instance.params.get('direction')!==FullPage.Direction.VERTICAL && instance.params.get('direction')!==FullPage.Direction.HORIZONTAL && instance.params.get('direction')!==FullPage.Direction.BOTH)){
+
+            console.warn('[FullPage] [Warning] Parameter "direction" should be passed as string and it should be one of followings: "vertical", "horizontal" or "both". For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            instance.params.set('direction',FullPage.Direction.VERTICAL);
+        }
+        //hash안 direction의 value가 1.문자가 아니거나 2.vertical3.horizonal4.both가 아니면 기본값으로 vertical로 준다 경고글띄어주고
+        if(typeof instance.params.get('speed')!=='number' || instance.params.get('speed')<1){
+            console.warn('[FullPage] [Warning] Parameter "speed" should be number and cannot be smaller than 1. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            instance.params.set('speed',FullPage.Speed.NORMAL);
+        }
+        //hash안 speed의 value가 1.숫자가 아니거나 2.1보다 작으면 기본값으로 NORMAL값300(아래 내부클레스 기본값)으로 준다 경고글띄어주고
+
+        if(typeof instance.params.get('easing')!=='string'){
+            console.warn('[FullPage] [Warning] Parameter "easing" should be string. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            instance.params.set('easing',FullPage.Easing.LINEAR);
+        }
+        //hash안 easing의 value가 1.문자가 아니면 기본값으로 LINEAR(아래 내부클레스 기본값)으로 준다 경고글띄어주고
+
+        if(typeof instance.params.get('minScrollPixel')!=='number' || instance.params.get('minScrollPixel')<0){
+            console.warn('[FullPage] [Warning] Parameter "minScrollPixel" should be number and must be equal to or bigger than 0. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            instance.params.set('minScrollPixel',50);
+        }
+        //hash안 easing의 value가 1.문자가 아니면 기본값으로 LINEAR(아래 내부클레스 기본값)으로 준다 경고글띄어주고
+    }
+    initChildren(instance){
+        instance.childMain=instance.container.querySelectorAll('div.fp-child-main');
+        //div.fp-child-main선택자를 childMain변수에 줌
+        instance.childrenVertical=instance.container.querySelectorAll('div.fp-child-vertical');
+        //class="div.fp-child-vertical" 여러개를 childrenVertical변수인 배열로 만듦
+        instance.childrenHorizontal=instance.container.querySelectorAll('div.fp-child-horizontal');
+        //class="div.fp-child-horizontal" 여러개를 childrenHorizontal변수인 배열로 만듦
+        if(instance.childMain.length!==1){
+            console.error('[FullPage] [Critical] Submitted element does not have any child which have "fp-child-main" as its class name. Container should have at least one child to be initialized. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            return;
+            // main이 한개가 아니면 에러 한개여야함
+        }else{
+            instance.childMain=instance.childMain[0];
+            //만약main이 여러개 선택된다면 0번째 index꺼를 childMain변수에 넣어줌
+        }
+        if(instance.params.get('direction')!==FullPage.Direction.HORIZONTAL && instance.childrenVertical.length===0){
+            console.error('[FullPage] [Critical] Submitted element does not have any children which have "fp-child-vertical" as its class name. Container should have at least one child to be initialized. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            return;
+            //div main가 direction이 horizontal이 아니고 div.child-vertica배열 개수가 0이면 에러빵
+        }
+        if(instance.params.get('direction')!==FullPage.Direction.VERTICAL && instance.childrenHorizontal.length===0){
+            console.error('[FullPage] [Critical] Submitted element does not have any children which have "fp-child-horizontal" as its class name. Container should have at least one child to be initialized. For more information, please visit https://www.yhquant.dev/libraries/fullpage/');
+            return;
+        }//div main가 direction이 VERTICAL이 아니고 div.child-Horizontal.배열 개수가 0이면 에러빵
+
+        let sumTop=0;
+        //initChildren메서드 안의 지역변수, 페이지 넘길때 다음페이지가 이전페이지의 높이만큼 먹어서 위치 이동하려고
+        let sumLeft=0;
+        //initChildren메서드 안의 지역변수, 페이지 넘길때 다음페이지가 이전페이지의 넓이만큼 먹어서 위치 이동하려고
+        instance.childMain.classList.add('fp-child-style-main');
+        //fp-child-style-main 클래스에 해당하는 css를 적용시킴
+        instance.childMain.classList.add('fp-child-style-position');
+        //fullpage.css에서 fp-child-style-position div.main클래스에 add함
+        for(let i=0; i<instance.childrenVertical.length; i++){
+        //Vertical의 개수만큼 반복
+            sumTop+=(
+                i===0?
+                instance.childMain.offsetHeight:
+                //0번째 div.main의 높이 얼만지 알려주고 그 값을 sumTop에 더해줌 main[0]보다 더 앞에있는 main의 높이를 알아야 그높이를 밑에바로 위치한다
+                instance.childrenVertical[i-1].offsetHeight
+                //0이 아닌경우니깐 이전페이지는 div.main이 아니다 이전페이지[i-1]의 높이 알아야 그높이를 밑에바로 위치한다
+            );
+            instance.childrenVertical[i].style.top=sumTop+'px';
+            //childrenVertical의 top 높이만큼 바로밑에 px값으로 넣어줌
+            instance.childrenVertical[i].classList.add('fp-child-style-position');
+            //childrenVertical에 fp-child-style-position add -- absolute면 모든 div.main,div.vertical들이 한곳에 겹쳐지니깐 sumtop ?px값 주는것
+            instance.childrenVertical[i].classList.add('fp-child-style-vertical');
+            //childrenVertical에 fp-child-style-vertical add
+        }
+        for(let i=0; i<instance.childrenHorizontal.length; i++){
+            sumLeft+=(
+                i===0?
+                instance.childMain.offsetWidth:
+                //0번째 div.main의 넓이 얼만지 알려주고 그 값을 sumLeft에 더해줌 main[0]보다 더 앞에있는 main의 넓이를 알아야 그넓이를 밑에바로 위치한다
+
+                instance.childrenHorizontal[i-1].offsetWidth
+                //0이 아닌경우니깐 이전페이지는 div.main이 아니다 이전페이지[i-1]의 넓이 알아야 그넓이를 바로옆 위치한다
+            );
+            instance.childrenHorizontal[i].style.left=sumLeft+'px';
+            //childrenVertical의 top 높이만큼 바로밑에 px값으로 넣어줌
+            instance.childrenHorizontal[i].classList.add('fp-child-style-position');
+
+            instance.childrenHorizontal[i].classList.add('fp-child-style-horizontal');
+        }
+    }
+
+    attachEvents(instance){
+        let lastPositionX=0;
+        let lastPositionY=0;
+        let isMove=false;
+        // move는 down이벤트 발생이후의 move를 말한다 down이벤트는 한번하면 끝이니깐 isMove로 이벤트를 유지?하도록함
+        instance.container.addEventListener('mousemove',function(e){
+        //mousemove해당하는 이벤트를 이용하려고 e 파라미터넣은것
+            if(!isMove) {return;}
+            //isMove true면 mouseMove 이벤트 실행하는데-> down하고 move해서 밑에 명령어들이 실행되도록, false라면
+            let currentPositionY=e.y//마우스 움직일때마다 그 위치이동만큼 숫자오름
+            let positionDifference=lastPositionY-currentPositionY;
+            //0-마우스움직인거만큼 빼기
+            for(let i=0; i<instance.childrenVertical.length; i++){
+                instance.childrenVertical[i].style.transition='none';
+                //CSS인 transition 다른것이 적용되지 않고 마우스 무브에 바로 따라오도록 만들어준것
+                instance.childrenVertical[i].style.transform=`translateY(-${positionDifference}px)`;
+                //mousemove 움직임만큼 위치로 페이지가 따라오도록하는것
+            }
+        });
+        instance.container.addEventListener('mouseleave',function(e){
+        //mouseleave(마우스가 div.#test를 벗어남)해당하는 이벤트를 이용하려고 e 파라미터넣은것
+            for(let i=0; i<instance.childrenVertical.length; i++){
+                instance.childrenVertical[i].style.transition='all 150ms linear';
+                //mouseleave때 페이지 이동하려고하는div를 다시 원래자리로 돌려놓기위한 transition(애니메이션?)
+                instance.childrenVertical[i].style.transform='none';
+                //CSS인 transition 다른것이 적용되지 않고 마우스 무브에 바로 따라오도록 만들어준것
+            }
+            isMove=false;
+            //mousemove이벤트 주지 않기 mouseleave일때
+        });
+        instance.container.addEventListener('mousedown',function(e){
+            lastPositionX=e.x;
+            //mousedown일때 x값찍기
+            lastPositionY=e.y;
+            //mousedown일때 y값찍기
+            isMove=true;
+            //mouseMove이벤트 연결?가능하게 함
+        });
+        instance.container.addEventListener('mouseup',function(e){
+            let differenceX=lastPositionX-e.x;
+            //마우스 다운했을때 엑스값 빼기 마우스업했을때 엑스값
+            let differenceY=lastPositionY-e.y;
+            //마우스 다운했을때 y값 빼기 마우스업했을때 y값
+            let absoluteDifferenceX=Math.abs(differenceX);
+            let absoluteDifferenceY=Math.abs(differenceY);
+            //절대값화(마이너스부호 없애기)
+            let isScrollingOccurred=false;
+            //페이지 넘기는 boolean변수
+            if(absoluteDifferenceX>absoluteDifferenceY && absoluteDifferenceX>instance.params.get('minScrollPixel')){
+                //100px보다 크게 움직이고 x:가로방향의 mouseDown-up뺀 수치가 크면
+                //HORIZONTAL ONLY ZONE
+                if(differenceX>0){
+                    //NEXT PAGE
+                    console.log('Horizontal : Next');
+                    isScrollingOccurred=true;
+                    //다음페이지로 넘김
+                }else if(differenceX<0){
+                    //PREV PAGE
+                    console.log('Horizontal : Prev');
+                    isScrollingOccurred=true;
+                    //이전페이지로 넘김
+                }
+            }else if(absoluteDifferenceX<absoluteDifferenceY && absoluteDifferenceY>instance.params.get('minScrollPixel')){
+                //100px보다 크게 움직이고 y:세로방향의 mouseDown-mouseup뺀(차이) 수치가 크면
+                if(differenceY>0){
+                    //VERTICAL NEXT PAGE
+                    console.log('Vertical : Next');
+
+                    for(let i=0; i<instance.childrenVertical.length; i++){
+                        let currentTop=parseInt((instance.childrenVertical[i].style.top).replace('px',''));
+                        //fp-child-vertical들의 top값의 px를 없애줌
+                        instance.childrenVertical[i].style.top=(currentTop-instance.activePage.offsetHeight)+'px';
+                        //activePage에 각 페이지(div.fp-vertical들 )의 top값을 준다 페이지이동효과주려고
+
+                    }
+                    if(instance.activePage===instance.childMain){
+                        instance.activePage=instance.childrenVertical[0];
+                        instance.activePageIndex=0;
+                        //div.main과 div.fp-vertical배열에 0번째를 main으로하게해서 첫페이지main이 첫순서에 오도록
+
+                    }else{
+                        instance.activePage=instance.childrenVertical[++instance.activePageIndex];
+                        //main이 아니면 activePage는 div.fp-vertical각각 차례로 index값+1 페이지 순서
+                    }
+                    isScrollingOccurred=true;
+                    //페이지이동효과준다
+                }else if(differenceY<0){
+                    //PREV PAGE
+                    console.log('Vertical : Prev');
+                    isScrollingOccurred=true;
+                    //이전페이지를 보려고하는경우에도 효과동일하게 적용시킴
+                }
+            }
+
+            for(let i=0; i<instance.childrenVertical.length; i++){
+                if(!isScrollingOccurred) {
+                    instance.childrenVertical[i].style.transition = 'all 150ms cubic-bezier(0,0.6,0.6,1)';
+                    //스크롤 동작이 100만큼보다도 적게 움지여 페이지 이동이 나타나지 않았을때 원래위치로 이동하도록하되, 부드럽게 이동하도록하는transition
+                }
+                instance.childrenVertical[i].style.transform='none';
+                //CSS인 transition 다른것이 적용되지 않도록하려고
+            }
+            isMove=false;
+        });
+    }
+}
+
+FullPage.Direction=class{};
+FullPage.Direction.VERTICAL='vertical';
+FullPage.Direction.HORIZONTAL='horizontal';
+FullPage.Direction.BOTH='both';
+
+FullPage.Speed=class{};
+FullPage.Speed.SLOW=500;
+FullPage.Speed.NORMAL=300;
+FullPage.Speed.FAST=100;
+FullPage.Speed.INSTANT=1;
+
+FullPage.Easing=class{};
+FullPage.Easing.LINEAR='linear';
+FullPage.Easing.CUBIC_BEZIER='cubicBezier(0,0.6,0.6,1)';
+FullPage.Easing.SPRING='spring';

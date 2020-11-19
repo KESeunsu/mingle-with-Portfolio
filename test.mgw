@@ -1,0 +1,152 @@
+
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+    <title>Smooth Scrolling Example</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <style>
+        body{
+            overflow-y:hidden;
+        }
+        body > div.container{
+            top:0;
+            left:0;
+            width:100%;
+            height:calc(100% + 20px);
+            background:linear-gradient(45deg,#8A2BE2,#EE82EE);
+            overflow-x:scroll;
+            overflow-y:hidden;
+            position:absolute;
+            z-index:0;
+        }
+
+        body > div.navigator{
+            bottom:2rem;
+            left:50%;
+            width:10rem;
+            height:0.4rem;
+            background-color:#D0D5DAA0;
+            border-radius:0.2rem;
+            opacity:0;
+            overflow:hidden;
+            position:fixed;
+            transform:translateX(-50%);
+            transition:all 500ms cubic-bezier(.86,0,.07,1);
+            user-select:none;
+            z-index:1;
+        }
+        body > div.navigator.visible{
+            bottom:3rem;
+            opacity:1;
+        }
+        body > div.navigator > div.navigator-item.position{
+            width:10px;
+            height:100%;
+            background-color:#FFFFFF;
+        }
+        body > div.container > div.container-item.menu-container{
+            top:50%;
+            left:0;
+            height:40vh;
+            position:absolute;
+            transform:translateY(-50%);
+            white-space:nowrap;
+        }
+        body > div.container > div.container-item.menu-container > div.menu-container-item{
+            width:30vh;
+            height:100%;
+            background-color:#FFFFFF;
+            box-shadow:0 0 2rem 0.125rem #ad999950;
+            color:#FFFFFF;
+            display:inline-block;
+            margin:0 15vh;
+            opacity:0;
+            position:relative;
+            transition:all 500ms cubic-bezier(.86,0,.07,1);
+            transform:scale(1.125);
+            user-select:none;
+        }
+        body > div.container > div.container-item.menu-container > div.menu-container-item.visible{
+            opacity:0.8;
+            transform:none;
+        }
+        body > div.container > div.container-item.menu-container > div.menu-container-item.visible.activated:hover{
+            opacity:1;
+        }
+        body > div.container > div.container-item.menu-container > div.menu-container-item.visible.activated:nth-child(odd){
+            transform:translateY(-5vh);
+        }
+        body > div.container > div.container-item.menu-container > div.menu-container-item.visible.activated:nth-child(even){
+            transform:translateY(5vh);
+        }
+        body > div.container > div.container-item.menu-container > div.menu-container-item:first-child, body > div.container > div.container-item.menu-container > div.menu-container-item:last-child{
+            margin:0 22.5vh;
+        }
+    </style>
+    <script>
+        window.addEventListener('load',()=>{
+            let menus=document.body.querySelectorAll('div.container > div.container-item.menu-container > div.menu-container-item');
+
+            let elNavigator=document.body.querySelector('div.navigator');
+            let elNavigatorPos=elNavigator.querySelector('div.navigator-item.position');
+            let counter=1;
+            for(let i=0;i<menus.length;i++){
+                setTimeout(()=>{
+                    menus[i].classList.add('visible');
+                },100*counter++);
+            }
+            setTimeout(()=>{
+                for(let i=0;i<menus.length;i++){
+                    menus[i].classList.add('activated');
+                }
+                elNavigator.classList.add('visible');
+            },100*counter+250);
+
+            let elContainer=document.body.querySelector('div.container');
+            elContainer.addEventListener('wheel',(e)=>{
+                let scrollFactor=15;
+                let scrollDelay=10;
+                if(e.deltaY>0){
+                    for(let i=0;i<scrollFactor;i++){
+                        setTimeout(()=>{
+                            elContainer.scrollTo(elContainer.scrollLeft+scrollFactor,0);
+                            scrollFactor-=1;
+                        },i*scrollDelay);
+                    }
+                }else{
+                    for(let i=0;i<scrollFactor;i++){
+                        setTimeout(()=>{
+                            elContainer.scrollTo(elContainer.scrollLeft-scrollFactor,0);
+                            scrollFactor-=1;
+                        },i*scrollDelay);
+                    }
+                }
+            });
+
+            calcNavigator();
+            function calcNavigator(){
+                let totalPos=elContainer.scrollWidth - elContainer.clientWidth;
+                let currentPos=elContainer.scrollLeft;
+                elNavigatorPos.style.width=(currentPos/totalPos)*100+'%';
+
+                setTimeout(calcNavigator,10);
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="container-item menu-container">
+        <div class="menu-container-item"></div>
+        <div class="menu-container-item"></div>
+        <div class="menu-container-item"></div>
+        <div class="menu-container-item"></div>
+    </div>
+</div>
+<div class="navigator">
+    <div class="navigator-item position"></div>
+</div>
+</body>
+</html>

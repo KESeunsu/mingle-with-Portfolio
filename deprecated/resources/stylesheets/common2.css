@@ -1,0 +1,14 @@
+body{
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+body > div.base.cover{
+    top: 0 ;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}

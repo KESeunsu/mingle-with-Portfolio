@@ -1,0 +1,34 @@
+<?php
+if(!isset($_GET['email']) ||!isset($_GET['password'])){
+    http_response_code(403);
+    exit();
+}
+$base64_pattern='/^([a-z0-9A-Z=]{4,100})$/';
+$email=$_GET['email'];
+$password=$_GET['password'];
+if(!preg_match($base64_pattern,$email) ||!preg_match($base64_pattern,$password)){
+    http_response_code(403);
+    exit();
+}
+$email=base64_decode($email);
+$password=base64_decode($password);
+
+$email_pattern='/^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/';
+$password_pattern='/^([a-zA-Z0-9]{4,16})$/';
+if(!preg_match($email_pattern,$email) || !preg_match($password_pattern,$password)){
+    http_response_code(403);
+    exit('error이메일과 비번의 형식이 잘못된 입력');
+}
+if(!@include_once('/var/www/html/xhr/resources/xhrs/dao.mgw')){
+    http_response_code(403);
+    exit('');
+}
+$connection=Dao::get_connection();
+if($connection===null){
+    exit('라라');
+}
+if(!@include_once('/var/www/html/xhr/resources/xhrs/account.mgw')){
+    http_response_code(403);
+}
+exit(Account::register($email,$password));
+
